@@ -55,7 +55,7 @@ module.exports = {
     let email = req.body.email;
     let password = req.body.password;
 
-    if (email == null || password || null) {
+    if (email == null || password == null) {
       return res.status(400).json({ error: "missing parameters" });
     }
 
