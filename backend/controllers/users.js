@@ -1,6 +1,6 @@
 // Imports
 let bcrypt = require("bcrypt");
-let jwt = require("jsonwebtoken");
+let jwtUtils = require("../utils/jwt.utils");
 let models = require("../models");
 
 //Controllers
@@ -49,7 +49,45 @@ module.exports = {
         return res.status(500).json({ error: "unable to verify user" });
       });
   },
+
   login: (req, res) => {
-    //to implement
+    // Parameters
+    let email = req.body.email;
+    let password = req.body.password;
+
+    if (email == null || password || null) {
+      return res.status(400).json({ error: "missing parameters" });
+    }
+
+    //to verify email regex, password lenght.
+
+    models.User.findOne({
+      where: { email: email },
+    })
+      .then((userFound) => {
+        if (userFound) {
+          bcrypt.compare(
+            password,
+            userFound.password,
+            (errBcrypt, resBcrypt) => {
+              if (resBcrypt) {
+                return res.status(200).json({
+                  userId: userFound.id,
+                  token: jwtUtils.generateTokenForUser(userFound),
+                });
+              } else {
+                return res.status(403).json({ error: "invalid password" });
+              }
+            }
+          );
+        } else {
+          return res
+            .status(404)
+            .json({ error: "user does not exist in the database" });
+        }
+      })
+      .catch((err) => {
+        return res.status(500).json({ error: "unable to verify user" });
+      });
   },
 };
