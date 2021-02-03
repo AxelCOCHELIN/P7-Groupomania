@@ -97,35 +97,74 @@ module.exports = {
       return res.status(400).json({ error: "missing parameters" });
     }
 
-    //to verify email regex, password lenght.
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.User.findOne({
+            where: { email: email },
+          })
+            .then((userFound) => {
+              done(null, userFound);
+            })
+            .catch((err) => {
+              return res.status(500).json({ error: "unable to verify user" });
+            });
+        },
+        (userFound, done) => {
+          if (userFound) {
+            bcrypt.compare(
+              password,
+              userFound.password,
+              (errBcrypt, resBcrypt) => {
+                done(null, userFound, resBcrypt);
+              }
+            );
+          } else {
+            return res
+              .status(404)
+              .json({ error: "user does not exist in the database" });
+          }
+        },
+        (userFound, resBcrypt, done) => {
+          if (resBcrypt) {
+            done(userFound);
+          } else {
+            return res.status(403).json({ error: "invalid password" });
+          }
+        },
+      ],
+      (userFound) => {
+        if (userFound) {
+          return res.status(201).json({
+            userId: userFound.id,
+            token: jwtUtils.generateTokenForUser(userFound),
+          });
+        } else {
+          return res.status(500).json({ error: "cannot log on user" });
+        }
+      }
+    );
+  },
+  profile: function (req, res) {
+    // Getting auth header
+    var headerAuth = req.headers["authorization"];
+    var userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     models.User.findOne({
-      where: { email: email },
+      attributes: ["id", "email", "username", "image"],
+      where: { id: userId },
     })
-      .then((userFound) => {
-        if (userFound) {
-          bcrypt.compare(
-            password,
-            userFound.password,
-            (errBcrypt, resBcrypt) => {
-              if (resBcrypt) {
-                return res.status(200).json({
-                  userId: userFound.id,
-                  token: jwtUtils.generateTokenForUser(userFound),
-                });
-              } else {
-                return res.status(403).json({ error: "invalid password" });
-              }
-            }
-          );
+      .then(function (user) {
+        if (user) {
+          res.status(201).json(user);
         } else {
-          return res
-            .status(404)
-            .json({ error: "user does not exist in the database" });
+          res.status(404).json({ error: "user not found" });
         }
       })
-      .catch((err) => {
-        return res.status(500).json({ error: "unable to verify user" });
+      .catch(function (err) {
+        res.status(500).json({ error: "cannot fetch user" });
       });
   },
 };
