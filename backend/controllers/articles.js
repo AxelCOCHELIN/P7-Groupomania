@@ -4,9 +4,9 @@ var asyncLib = require("async");
 var jwtUtils = require("../utils/jwt.utils");
 
 // Constants
-const TITLE_LIMIT = 2;
-const CONTENT_LIMIT = 4;
-const ITEMS_LIMIT = 50;
+const titleLimit = 2;
+const contentLimit = 4;
+const itemsLimit = 50;
 
 // Routes
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
       return res.status(400).json({ error: "missing parameters" });
     }
 
-    if (title.length <= TITLE_LIMIT || content.length <= CONTENT_LIMIT) {
+    if (title.length <= titleLimit || content.length <= contentLimit) {
       return res.status(400).json({ error: "invalid parameters" });
     }
 
@@ -64,5 +64,40 @@ module.exports = {
       }
     );
   },
-  listArticles: (req, res) => {},
+  listArticles: (req, res) => {
+    let fields = req.query.fields; // select wanted columns
+    let limit = parseInt(req.query.limit); // get articles by segmentation
+    let offset = parseInt(req.query.offset); // get articles by segmentation
+    let order = req.query.order; // get the list in a particular order
+
+    if (limit > itemsLimit) {
+      limit = itemsLimit;
+    }
+
+    models.Article.findAll({
+      // verify user input
+      order: [order != null ? order.split(":") : ["title", "ASC"]],
+      attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+      limit: !isNaN(limit) ? limit : null,
+      offset: !isNaN(offset) ? offset : null,
+      include: [
+        {
+          // table that permit models inclusion
+          model: models.User,
+          attributes: ["username"],
+        },
+      ],
+    })
+      .then((articles) => {
+        if (articles) {
+          res.status(200).json(articles);
+        } else {
+          res.status(404).json({ error: "no messages found" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: "invalid fields" });
+      });
+  },
 };
