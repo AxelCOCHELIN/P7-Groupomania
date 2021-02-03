@@ -1,7 +1,8 @@
 // Imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const apiRouter = require("./routes/users").router;
+const usersRouter = require("./routes/users").router;
+const articlesRouter = require("./routes/articles").router;
 
 // Instantiate server
 const server = express();
@@ -16,7 +17,8 @@ server.get("/", (req, res) => {
   res.status(200).send("<h1>Bienvenue sur mon server</h1>");
 });
 
-server.use("/api/", apiRouter);
+server.use("/api/", usersRouter);
+server.use("/api/", articlesRouter);
 
 // Launch server
 server.listen(8080, () => {
