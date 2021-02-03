@@ -10,6 +10,7 @@ exports.router = (() => {
   apiRouter.route("/users/signup/").post(usersCtrl.signup);
   apiRouter.route("/users/login/").post(usersCtrl.login);
   apiRouter.route("/users/profile/").get(usersCtrl.profile);
+  apiRouter.route("/users/profile/").put(usersCtrl.updateProfile);
 
   return apiRouter;
 })();

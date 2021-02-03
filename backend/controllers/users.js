@@ -145,10 +145,10 @@ module.exports = {
       }
     );
   },
-  profile: function (req, res) {
+  profile: (req, res) => {
     // Getting auth header
-    var headerAuth = req.headers["authorization"];
-    var userId = jwtUtils.getUserId(headerAuth);
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
 
     if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
@@ -166,5 +166,53 @@ module.exports = {
       .catch(function (err) {
         res.status(500).json({ error: "cannot fetch user" });
       });
+  },
+  updateProfile: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    // Parameters
+    let image = req.body.image;
+
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.User.findOne({
+            attributes: ["id", "image"],
+            where: { id: userId },
+          })
+            .then((userFound) => {
+              done(null, userFound);
+            })
+            .catch((err) => {
+              return res.status(500).json({ error: "unable to verify user" });
+            });
+        },
+        (userFound, done) => {
+          if (userFound) {
+            userFound
+              .update({
+                image: image ? image : userFound.image,
+              })
+              .then(() => {
+                done(userFound);
+              })
+              .catch((err) => {
+                res.status(500).json({ error: "cannot update user" });
+              });
+          } else {
+            res.status(404).json({ error: "user not found" });
+          }
+        },
+      ],
+      (userFound) => {
+        if (userFound) {
+          return res.status(201).json(userFound);
+        } else {
+          return res.status(500).json({ error: "cannot update user profile" });
+        }
+      }
+    );
   },
 };
