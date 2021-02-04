@@ -11,6 +11,7 @@ exports.router = (() => {
   usersRouter.route("/users/login/").post(usersCtrl.login);
   usersRouter.route("/users/profile/").get(usersCtrl.profile);
   usersRouter.route("/users/profile/").put(usersCtrl.updateProfile);
+  usersRouter.route("/users/profile/").delete(usersCtrl.deleteProfile);
 
   return usersRouter;
 })();

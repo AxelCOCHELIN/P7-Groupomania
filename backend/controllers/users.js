@@ -65,9 +65,7 @@ module.exports = {
             email: email,
             password: bcryptedPassword,
             username: username,
-            image: `${req.protocol}://${req.get("host")}/images/${
-              req.file.filename
-            }`,
+            image: image,
             isAdmin: 0,
           })
             .then((newUser) => {
@@ -213,6 +211,53 @@ module.exports = {
           return res.status(201).json(userFound);
         } else {
           return res.status(500).json({ error: "cannot update user profile" });
+        }
+      }
+    );
+  },
+  deleteProfile: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.User.findOne({
+            attributes: ["id"],
+            where: { id: userId },
+          })
+            .then((userFound) => {
+              done(null, userFound);
+            })
+            .catch((err) => {
+              return res.status(500).json({ error: "unable to verify user" });
+            });
+        },
+        (userFound, done) => {
+          if (userFound) {
+            userFound
+              .destroy({
+                where: { id: userId },
+              })
+              .then(() => {
+                done(userFound);
+              })
+              .catch((err) => {
+                res.status(500).json({ error: "cannot delete user" });
+              });
+          } else {
+            res.status(404).json({ error: "user not found" });
+          }
+        },
+      ],
+      (userFound) => {
+        if (userFound) {
+          return res
+            .status(201)
+            .json({ message: "user has been successfully deleted" });
+        } else {
+          return res.status(500).json({ error: "cannot delete user profile" });
         }
       }
     );
