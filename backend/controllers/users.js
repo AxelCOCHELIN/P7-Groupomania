@@ -174,12 +174,13 @@ module.exports = {
 
     // Parameters
     let image = req.body.image;
+    let username = req.body.username;
 
     asyncLib.waterfall(
       [
         (done) => {
           models.User.findOne({
-            attributes: ["id", "image"],
+            attributes: ["id", "image", "username"],
             where: { id: userId },
           })
             .then((userFound) => {
@@ -194,6 +195,7 @@ module.exports = {
             userFound
               .update({
                 image: image ? image : userFound.image,
+                username: username ? username : userFound.username,
               })
               .then(() => {
                 done(userFound);

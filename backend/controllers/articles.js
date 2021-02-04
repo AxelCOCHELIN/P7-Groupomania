@@ -76,7 +76,10 @@ module.exports = {
 
     models.Article.findAll({
       // verify user input
-      order: [order != null ? order.split(":") : ["title", "ASC"]],
+      order: [
+        ["updatedAt", "DESC"],
+        ["createdAt", "DESC"],
+      ],
       attributes: fields !== "*" && fields != null ? fields.split(",") : null,
       limit: !isNaN(limit) ? limit : null,
       offset: !isNaN(offset) ? offset : null,
