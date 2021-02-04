@@ -65,7 +65,9 @@ module.exports = {
             email: email,
             password: bcryptedPassword,
             username: username,
-            image: image,
+            image: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
             isAdmin: 0,
           })
             .then((newUser) => {
