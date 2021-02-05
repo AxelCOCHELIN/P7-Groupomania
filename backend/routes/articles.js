@@ -9,6 +9,8 @@ exports.router = (() => {
   // Routes assignations
   articlesRouter.route("/articles/new").post(articlesCtrl.createArticle);
   articlesRouter.route("/articles/").get(articlesCtrl.listArticles);
+  articlesRouter.route("/article/:id").get(articlesCtrl.oneArticle);
+  articlesRouter.route("/article/").put(articlesCtrl.modifyArticle);
 
   return articlesRouter;
 })();

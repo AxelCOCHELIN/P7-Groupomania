@@ -64,6 +64,17 @@ module.exports = {
       }
     );
   },
+  oneArticle: (req, res) => {
+    let articleId = req.params.id;
+    models.Article.findOne({
+      attributes: ["id", "image", "title", "content"],
+      where: { id: articleId },
+    })
+      .then((article) => res.status(200).json(article))
+      .catch((err) => res.status(404).json({ error: "cannot get article" }));
+  },
+  modifyArticle: (req, res) => {},
+  deleteArticle: (req, res) => {},
   listArticles: (req, res) => {
     let fields = req.query.fields; // select wanted columns
     let limit = parseInt(req.query.limit); // get articles by segmentation
