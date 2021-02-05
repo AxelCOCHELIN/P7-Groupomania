@@ -65,13 +65,27 @@ module.exports = {
     );
   },
   oneArticle: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
     let articleId = req.params.id;
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+
     models.Article.findOne({
-      attributes: ["id", "image", "title", "content"],
+      attributes: ["id", "image", "title", "content", "userId"],
       where: { id: articleId },
+      include: [
+        {
+          // table that permit models inclusion
+          model: models.User,
+          attributes: ["username"],
+        },
+      ],
     })
       .then((article) => res.status(200).json(article))
-      .catch((err) => res.status(404).json({ error: "cannot get article" }));
+      .catch((err) =>
+        res.status(404).json({ error: "cannot find this article" })
+      );
   },
   modifyArticle: (req, res) => {},
   deleteArticle: (req, res) => {},
