@@ -264,4 +264,25 @@ module.exports = {
       }
     );
   },
+  allUsers: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
+
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+
+    models.User.findAll({
+      attributes: ["id", "email", "username", "image"],
+    })
+      .then(function (users) {
+        if (users) {
+          res.status(201).json(users);
+        } else {
+          res.status(404).json({ error: "users not found" });
+        }
+      })
+      .catch(function (err) {
+        res.status(500).json({ error: "cannot fetch users" });
+      });
+  },
 };
