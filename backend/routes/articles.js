@@ -11,7 +11,7 @@ exports.router = (() => {
   articlesRouter.route("/articles/").get(articlesCtrl.listArticles);
   articlesRouter.route("/article/:id").get(articlesCtrl.oneArticle);
   articlesRouter.route("/article/:id").put(articlesCtrl.modifyArticle);
-  articlesRouter.route("/article/:id").delete(articlesCtrl.modifyArticle);
+  articlesRouter.route("/article/:id").delete(articlesCtrl.deleteArticle);
 
   return articlesRouter;
 })();

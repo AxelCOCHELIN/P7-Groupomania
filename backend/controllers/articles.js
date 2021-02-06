@@ -14,7 +14,7 @@ module.exports = {
     // Getting auth header
     var headerAuth = req.headers["authorization"];
     var userId = jwtUtils.getUserId(headerAuth);
-
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
     // Params
     var title = req.body.title;
     var content = req.body.content;
@@ -45,7 +45,6 @@ module.exports = {
             models.Article.create({
               title: title,
               content: content,
-              likes: 0,
               UserId: userFound.id,
             }).then(function (newArticle) {
               done(newArticle);
@@ -87,8 +86,108 @@ module.exports = {
         res.status(404).json({ error: "cannot find this article" })
       );
   },
-  modifyArticle: (req, res) => {},
-  deleteArticle: (req, res) => {},
+  modifyArticle: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
+    let articleId = req.params.id;
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    // Parameters
+    let title = req.body.title;
+    let content = req.body.content;
+
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.Article.findOne({
+            attributes: ["id", "title", "content", "userId"],
+            where: { id: articleId },
+          })
+            .then((articleFound) => {
+              done(null, articleFound);
+            })
+            .catch((err) => {
+              return res.status(500).json({ error: "unable to verify user" });
+            });
+        },
+        (articleFound, done) => {
+          if (articleFound) {
+            articleFound
+              .update({
+                title: title ? title : articleFound.title,
+                content: content ? content : articleFound.content,
+              })
+              .then(() => {
+                done(articleFound);
+              })
+              .catch((err) => {
+                res.status(500).json({ error: "cannot update this article" });
+              });
+          } else {
+            res.status(404).json({ error: "user not found" });
+          }
+        },
+      ],
+      (articleFound) => {
+        if (articleFound) {
+          return res.status(201).json(articleFound);
+        } else {
+          return res.status(500).json({ error: "cannot update this article" });
+        }
+      }
+    );
+  },
+  deleteArticle: (req, res) => {
+    // Getting auth header
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
+    let articleId = req.params.id;
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+
+    asyncLib.waterfall(
+      [
+        (done) => {
+          models.Article.findOne({
+            attributes: ["id"],
+            where: { id: articleId },
+          })
+            .then((articleFound) => {
+              done(null, articleFound);
+            })
+            .catch((err) => {
+              return res
+                .status(500)
+                .json({ error: "unable to verify this article" });
+            });
+        },
+        (articleFound, done) => {
+          if (articleFound) {
+            articleFound
+              .destroy({
+                where: { id: articleId },
+              })
+              .then(() => {
+                done(articleFound);
+              })
+              .catch((err) => {
+                res.status(500).json({ error: "cannot delete article" });
+              });
+          } else {
+            res.status(404).json({ error: "article not found" });
+          }
+        },
+      ],
+      (articleFound) => {
+        if (articleFound) {
+          return res
+            .status(201)
+            .json({ message: "article has been successfully deleted" });
+        } else {
+          return res.status(500).json({ error: "cannot delete this article" });
+        }
+      }
+    );
+  },
   listArticles: (req, res) => {
     let fields = req.query.fields; // select wanted columns
     let limit = parseInt(req.query.limit); // get articles by segmentation
