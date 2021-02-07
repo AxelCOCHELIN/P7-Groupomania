@@ -15,6 +15,7 @@ module.exports = {
     let password = req.body.password;
     let username = req.body.username;
     let image = req.body.image;
+    let isAdmin = "";
 
     if (email == null || username == null || password == null) {
       return res.status(400).json({ error: "missing parameters" });
@@ -35,6 +36,12 @@ module.exports = {
         error:
           "password not valid (must lenght 4 - 8 and include 1 number and 1 uppercase",
       });
+    }
+
+    if (req.body.email === "iamtheadmin@groupomania.com") {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
     }
 
     asyncLib.waterfall(
@@ -66,7 +73,7 @@ module.exports = {
             password: bcryptedPassword,
             username: username,
             image: image,
-            isAdmin: 0,
+            isAdmin: isAdmin,
           })
             .then((newUser) => {
               done(newUser);
@@ -153,7 +160,7 @@ module.exports = {
     if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     models.User.findOne({
-      attributes: ["id", "email", "username", "image"],
+      attributes: ["id", "email", "username", "image", "isAdmin"],
       where: { id: userId },
     })
       .then(function (user) {
@@ -275,7 +282,7 @@ module.exports = {
     if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     models.User.findAll({
-      attributes: ["id", "email", "username", "image"],
+      attributes: ["id", "email", "username", "image", "isAdmin"],
     })
       .then(function (users) {
         if (users) {
