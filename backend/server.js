@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const usersRouter = require("./routes/users").router;
 const articlesRouter = require("./routes/articles").router;
+const commentsRouter = require("./routes/comments").router;
 
 const helmet = require("helmet");
 
@@ -38,6 +39,7 @@ server.use("/images", express.static(path.join(__dirname, "images")));
 
 server.use("/api/", usersRouter);
 server.use("/api/", articlesRouter);
+server.use("/api/", commentsRouter);
 
 // Launch server
 server.listen(8080, () => {

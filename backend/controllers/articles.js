@@ -12,12 +12,12 @@ const itemsLimit = 50;
 module.exports = {
   createArticle: function (req, res) {
     // Getting auth header
-    var headerAuth = req.headers["authorization"];
-    var userId = jwtUtils.getUserId(headerAuth);
+    let headerAuth = req.headers["authorization"];
+    let userId = jwtUtils.getUserId(headerAuth);
     if (userId < 0) return res.status(400).json({ error: "wrong token" });
     // Params
-    var title = req.body.title;
-    var content = req.body.content;
+    let title = req.body.title;
+    let content = req.body.content;
 
     if (title == null || content == null) {
       return res.status(400).json({ error: "missing parameters" });
