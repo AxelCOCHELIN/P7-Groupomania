@@ -5,7 +5,7 @@ let models = require("../models");
 let asyncLib = require("async");
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/;
+const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
 
 //Controllers
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         error:
-          "password not valid (must lenght 4 - 8 and include 1 number and 1 uppercase",
+          "password not valid (must lenght 8 - 20 and include 1 number and 1 uppercase",
       });
     }
 
