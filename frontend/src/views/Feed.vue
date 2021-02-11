@@ -1,17 +1,17 @@
 <template>
   <v-container>
-    <Signup />
+    <Articles />
   </v-container>
 </template>
 
 <script>
-import Signup from "@/components/Signup.vue";
+import Articles from "@/components/Articles.vue";
 // @ is an alias to /src
 
 export default {
-  name: "Home",
+  name: "Articles",
   components: {
-    Signup,
+    Articles,
   },
 };
 </script>

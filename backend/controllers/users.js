@@ -18,23 +18,25 @@ module.exports = {
     let isAdmin = "";
 
     if (email == null || username == null || password == null) {
-      return res.status(400).json({ error: "missing parameters" });
+      return res.status(400).json({
+        error: "Vous devez renseigner l'email, le mot de passe et le pseudo",
+      });
     }
 
     if (username.length >= 21 || username.length <= 2) {
       return res
         .status(400)
-        .json({ error: "wrong username (must be length 3 - 20)" });
+        .json({ error: "Votre pseudo doit contenir entre 3 et 20 caractères" });
     }
 
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "email is not valid" });
+      return res.status(400).json({ error: "l'adresse mail n'est pas valide" });
     }
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         error:
-          "password not valid (must lenght 8 - 20 and include 1 number and 1 uppercase",
+          "Le mot de passe n'est pas valide. Il doit contenir entre 8 et 20 caractères et inclure un chiffre et une majuscule.",
       });
     }
 
@@ -55,7 +57,9 @@ module.exports = {
               done(null, userFound);
             })
             .catch((err) => {
-              return res.status(500).json({ error: "unable to verify user" });
+              return res
+                .status(500)
+                .json({ error: "impossible d'identifier l'utilisateur" });
             });
         },
         (userFound, done) => {
@@ -64,7 +68,7 @@ module.exports = {
               done(null, userFound, bcryptedPassword);
             });
           } else {
-            return res.status(409).json({ error: "user already exist" });
+            return res.status(409).json({ error: "L'utilisateur existe déjà" });
           }
         },
         (userFound, bcryptedPassword, done) => {
@@ -79,7 +83,9 @@ module.exports = {
               done(newUser);
             })
             .catch((err) => {
-              return res.status(500).json({ error: "cannot add user" });
+              return res
+                .status(500)
+                .json({ error: "impossible d'ajouter l'utilisateur" });
             });
         },
       ],
@@ -89,7 +95,9 @@ module.exports = {
             userId: newUser.id,
           });
         } else {
-          return res.status(500).json({ error: "cannot add user" });
+          return res
+            .status(500)
+            .json({ error: "impossible d'ajouter l'utilisateur" });
         }
       }
     );
@@ -101,7 +109,9 @@ module.exports = {
     let password = req.body.password;
 
     if (email == null || password == null) {
-      return res.status(400).json({ error: "missing parameters" });
+      return res
+        .status(400)
+        .json({ error: "l'email et le mot de passe sont requis" });
     }
 
     asyncLib.waterfall(
@@ -114,7 +124,9 @@ module.exports = {
               done(null, userFound);
             })
             .catch((err) => {
-              return res.status(500).json({ error: "unable to verify user" });
+              return res
+                .status(500)
+                .json({ error: "impossible de vérifier l'utilisateur" });
             });
         },
         (userFound, done) => {
@@ -129,14 +141,16 @@ module.exports = {
           } else {
             return res
               .status(404)
-              .json({ error: "user does not exist in the database" });
+              .json({ error: "l'utilisateur n'existe pas" });
           }
         },
         (userFound, resBcrypt, done) => {
           if (resBcrypt) {
             done(userFound);
           } else {
-            return res.status(403).json({ error: "invalid password" });
+            return res
+              .status(403)
+              .json({ error: "le mot de passe n'est pas le bon" });
           }
         },
       ],
@@ -147,7 +161,7 @@ module.exports = {
             token: jwtUtils.generateTokenForUser(userFound),
           });
         } else {
-          return res.status(500).json({ error: "cannot log on user" });
+          return res.status(500).json({ error: "impossible de se connecter" });
         }
       }
     );
