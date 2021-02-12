@@ -11,10 +11,10 @@ const itemsLimit = 50;
 // Routes
 module.exports = {
   createArticle: function (req, res) {
-    // Getting auth header
+    /* // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
     // Params
     let title = req.body.title;
     let content = req.body.content;
@@ -64,12 +64,12 @@ module.exports = {
     );
   },
   oneArticle: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
+    
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
     let articleId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
-
     models.Article.findOne({
       attributes: ["id", "image", "title", "content", "userId"],
       where: { id: articleId },
@@ -87,11 +87,11 @@ module.exports = {
       );
   },
   modifyArticle: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
     let articleId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
     // Parameters
     let title = req.body.title;
     let content = req.body.content;
@@ -138,11 +138,11 @@ module.exports = {
     );
   },
   deleteArticle: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
     let articleId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
 
     asyncLib.waterfall(
       [

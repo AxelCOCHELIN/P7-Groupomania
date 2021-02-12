@@ -9,10 +9,10 @@ const itemsLimit = 50;
 // Routes
 module.exports = {
   createComment: function (req, res) {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
     // Params
     let articleId = req.params.id;
     let comment = req.body.comment;
@@ -62,11 +62,11 @@ module.exports = {
     );
   },
   oneComment: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
     let commentId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });*/
 
     models.Comment.findOne({
       attributes: ["id", "comment", "userId", "articleId"],
@@ -90,11 +90,11 @@ module.exports = {
       );
   },
   modifyComment: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
     let commentId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
     // Parameters
     let comment = req.body.comment;
 
@@ -139,11 +139,11 @@ module.exports = {
     );
   },
   deleteComment: (req, res) => {
-    // Getting auth header
+    /*  // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
     let commentId = req.params.id;
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });
+    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
 
     asyncLib.waterfall(
       [

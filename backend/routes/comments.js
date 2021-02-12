@@ -8,12 +8,12 @@ exports.router = (() => {
 
   // Routes assignations
   commentsRouter
-    .route("/article/:id/comment/new")
+    .route("/articles/:id/comments/new")
     .post(commentsCtrl.createComment);
   commentsRouter.route("/comments/").get(commentsCtrl.allComments);
-  commentsRouter.route("/comment/:id").get(commentsCtrl.oneComment);
-  commentsRouter.route("/comment/:id").put(commentsCtrl.modifyComment);
-  commentsRouter.route("/comment/:id").delete(commentsCtrl.deleteComment);
+  commentsRouter.route("/comments/:id").get(commentsCtrl.oneComment);
+  commentsRouter.route("/comments/:id").put(commentsCtrl.modifyComment);
+  commentsRouter.route("/comments/:id").delete(commentsCtrl.deleteComment);
 
   return commentsRouter;
 })();
