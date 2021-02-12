@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <router-link to="/">home</router-link> |
-    <router-link to="/about">about</router-link>
+    <Navbar />
     <v-main>
       <router-view />
     </v-main>
@@ -9,10 +8,13 @@
 </template>
 
 <script>
+import Navbar from "@/components/Navbar.vue";
 export default {
   name: "App",
 
-  components: {},
+  components: {
+    Navbar,
+  },
 
   data: () => ({
     //
