@@ -10,7 +10,7 @@ exports.router = (() => {
   commentsRouter
     .route("/articles/:id/comments/new")
     .post(commentsCtrl.createComment);
-  commentsRouter.route("/comments/").get(commentsCtrl.allComments);
+  commentsRouter.route("/comments").get(commentsCtrl.allComments);
   commentsRouter.route("/comments/:id").get(commentsCtrl.oneComment);
   commentsRouter.route("/comments/:id").put(commentsCtrl.modifyComment);
   commentsRouter.route("/comments/:id").delete(commentsCtrl.deleteComment);

@@ -17,5 +17,8 @@ export default {
   data: () => ({
     //
   }),
+  mounted() {
+    this.$store.dispatch("loadArticles");
+  },
 };
 </script>
