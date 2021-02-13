@@ -153,11 +153,11 @@ module.exports = {
     );
   },
   profile: (req, res) => {
-    /*  // Getting auth header
+    // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     models.User.findOne({
       attributes: ["id", "email", "username", "image", "isAdmin"],
@@ -175,11 +175,11 @@ module.exports = {
       });
   },
   updateProfile: (req, res) => {
-    /*   // Getting auth header
+    // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0) return res.status(400).json({ error: "wrong token" }); */
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
     // Parameters
     let image = req.body.image;
     let username = req.body.username;
@@ -226,11 +226,11 @@ module.exports = {
     );
   },
   deleteProfile: (req, res) => {
-    /*  // Getting auth header
+    // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });*/
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     asyncLib.waterfall(
       [
@@ -275,11 +275,11 @@ module.exports = {
     );
   },
   allUsers: (req, res) => {
-    /*// Getting auth header
+    // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
 
-    if (userId < 0) return res.status(400).json({ error: "wrong token" });*/
+    if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     models.User.findAll({
       attributes: ["id", "email", "username", "image", "isAdmin"],
