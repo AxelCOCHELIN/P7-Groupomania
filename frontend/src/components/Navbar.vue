@@ -71,6 +71,20 @@
           ></template
         ><span dark color="black">Tous les profils</span></v-tooltip
       >
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            plain
+            small
+            aria-label="Se déconnecter"
+            v-bind="attrs"
+            v-on="on"
+            @click="logoutUser"
+            ><v-icon>mdi-logout</v-icon></v-btn
+          ></template
+        ><span dark color="black">Se déconnecter</span></v-tooltip
+      >
     </v-toolbar>
   </nav>
 </template>
@@ -78,5 +92,10 @@
 <script>
 export default {
   name: "Navbar",
+  methods: {
+    logoutUser() {
+      this.$store.dispatch("logoutUser");
+    },
+  },
 };
 </script>
