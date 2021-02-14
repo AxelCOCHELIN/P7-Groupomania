@@ -7,8 +7,10 @@
       ></v-text-field
       ><v-text-field
         v-model="loginInfo.password"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         label="Mot de passe"
-        type="password"
+        :type="showPassword ? 'text' : 'password'"
+        @click:append="showPassword = !showPassword"
       ></v-text-field>
 
       <v-btn @click="loginUser">Se connecter <v-icon>mdi-login</v-icon></v-btn>
@@ -19,6 +21,7 @@
 export default {
   data() {
     return {
+      showPassword: false,
       loginInfo: {
         email: "",
         password: "",
