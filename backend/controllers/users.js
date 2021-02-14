@@ -87,6 +87,7 @@ module.exports = {
         if (newUser) {
           return res.status(201).json({
             userId: newUser.id,
+            username: newUser.username,
           });
         } else {
           return res.status(500).json({ error: "cannot add user" });
@@ -144,6 +145,7 @@ module.exports = {
         if (userFound) {
           return res.status(201).json({
             userId: userFound.id,
+            username: userFound.username,
             token: jwtUtils.generateTokenForUser(userFound),
           });
         } else {

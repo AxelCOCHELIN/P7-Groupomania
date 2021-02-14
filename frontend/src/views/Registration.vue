@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <UserAuthForm :submitForm="loginUser" buttonText="Se connecter" />
+    <UserAuthForm
+      :submitForm="registerUser"
+      buttonText="S'enregistrer"
+      hasName="true"
+    />
   </v-container>
 </template>
 <script>
@@ -12,12 +16,12 @@ export default {
   },
 
   methods: {
-    async loginUser(userInfo) {
-      let user = await this.$store.dispatch("loginUser", userInfo);
+    async registerUser(registrationInfo) {
+      let user = await this.$store.dispatch("registerUser", registrationInfo);
       if (user.error) {
         alert(user.error);
       } else {
-        alert("Félicitation " + user.username + ", vous êtes connecté!");
+        alert("Bienvenue dans le groupe ");
       }
     },
   },

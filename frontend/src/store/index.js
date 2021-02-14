@@ -30,12 +30,33 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
     },
-    async loginUser({ commit }, loginInfo) {
-      let response = await Api().post("/users/login", loginInfo);
-      let user = response.data;
+    async loginUser({ commit }, userInfo) {
+      try {
+        let response = await Api().post("/users/login", userInfo);
 
-      //let user = JSON.parse(window.localStorage.currentUser);
-      commit("SET_CURRENT_USER", user);
+        let user = response.data;
+
+        commit("SET_CURRENT_USER", user);
+      } catch {
+        return {
+          error:
+            "La combinaison email/mot de passe est incorrecte. Merci de réessayer",
+        };
+      }
+    },
+    async registerUser({ commit }, registrationInfo) {
+      try {
+        let response = await Api().post(
+          "/users/registration",
+          registrationInfo
+        );
+        let user = response.data;
+        commit("SET_CURRENT_USER", user);
+      } catch {
+        return {
+          error: "Une erreur est survenue. Merci de réessayer",
+        };
+      }
     },
   },
   modules: {},
