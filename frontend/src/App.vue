@@ -9,6 +9,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+
 export default {
   name: "App",
 
@@ -21,6 +22,7 @@ export default {
   }),
   mounted() {
     this.$store.dispatch("loadArticles");
+    this.$store.dispatch("loadCurrentUser");
   },
 };
 </script>

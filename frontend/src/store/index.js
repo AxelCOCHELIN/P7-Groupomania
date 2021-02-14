@@ -30,6 +30,10 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
     },
+    async loadCurrentUser({ commit }) {
+      let user = JSON.parse(window.localStorage.currentUser);
+      commit("SET_CURRENT_USER", user);
+    },
     async loginUser({ commit }, userInfo) {
       try {
         let response = await Api().post("/users/login", userInfo);
