@@ -146,6 +146,7 @@ module.exports = {
           return res.status(201).json({
             userId: userFound.id,
             username: userFound.username,
+            isAdmin: userFound.isAdmin,
             token: jwtUtils.generateTokenForUser(userFound),
           });
         } else {

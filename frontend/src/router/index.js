@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Registration from "../views/Registration.vue";
+import AdminPage from "../views/AdminPage.vue";
 import ArticleAlone from "../views/ArticleAlone.vue";
 
 Vue.use(VueRouter);
@@ -31,6 +32,20 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/admin",
+    name: "admin-page",
+    component: AdminPage,
+    beforeEnter(to, from, next) {
+      let currentUser = JSON.parse(window.localStorage.currentUser);
+      if (currentUser && currentUser.isAdmin) {
+        next();
+      } else {
+        next("/");
+      }
+    },
+    children: [],
   },
   {
     path: "/article/:id",

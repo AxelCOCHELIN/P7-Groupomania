@@ -18,6 +18,22 @@
           />
         </router-link>
       </v-toolbar-title>
+      <div v-if="currentUser.isAdmin">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              fab
+              plain
+              small
+              aria-label="Admin page"
+              v-bind="attrs"
+              v-on="on"
+              to="/admin"
+              ><v-icon>mdi-account-cowboy-hat</v-icon></v-btn
+            ></template
+          ><span dark color="black">Admin</span></v-tooltip
+        >
+      </div>
       <v-btn v-if="currentUser.username" text to="/articles/new"
         >Ajouter un article</v-btn
       >
@@ -65,6 +81,7 @@
               v-bind="attrs"
               v-on="on"
               @click="logoutUser"
+              to="/"
               ><v-icon>mdi-logout</v-icon></v-btn
             ></template
           ><span dark color="black">Se déconnecter</span></v-tooltip
