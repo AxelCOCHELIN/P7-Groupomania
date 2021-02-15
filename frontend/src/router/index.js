@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Registration from "../views/Registration.vue";
+import Feed from "../views/Feed.vue";
 import AdminPage from "../views/AdminPage.vue";
 import AdminUsers from "../views/AdminUsers.vue";
 import ArticleAlone from "../views/ArticleAlone.vue";
@@ -14,6 +15,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/feed",
+    name: "Feed",
+    component: Feed,
   },
   {
     path: "/login",
