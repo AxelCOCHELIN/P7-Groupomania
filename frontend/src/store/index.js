@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     articles: [],
     currentUser: {},
+    users: [],
   },
   mutations: {
     SET_ARTICLES(state, articles) {
@@ -21,8 +22,15 @@ export default new Vuex.Store({
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
     },
+    SET_USERS(state, users) {
+      state.users = users;
+    },
   },
   actions: {
+    async loadUsers({ commit }) {
+      let response = await Api().get("/users");
+      commit("SET_USERS", response.data);
+    },
     async loadArticles({ commit }) {
       let response = await Api().get("/articles");
       commit("SET_ARTICLES", response.data);

@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Registration from "../views/Registration.vue";
 import AdminPage from "../views/AdminPage.vue";
+import AdminUsers from "../views/AdminUsers.vue";
 import ArticleAlone from "../views/ArticleAlone.vue";
 
 Vue.use(VueRouter);
@@ -45,7 +46,13 @@ const routes = [
         next("/");
       }
     },
-    children: [],
+    children: [
+      {
+        path: "users",
+        name: "admin-users",
+        component: AdminUsers,
+      },
+    ],
   },
   {
     path: "/article/:id",

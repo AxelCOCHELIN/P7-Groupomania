@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <h1>Admin</h1>
+    <v-tabs>
+      <v-tab to="/admin/users">Users</v-tab>
+    </v-tabs>
     <router-view></router-view>
   </v-container>
 </template>
