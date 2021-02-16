@@ -25,6 +25,10 @@ export default new Vuex.Store({
     SET_USERS(state, users) {
       state.users = users;
     },
+    ADD_ARTICLE(state, article) {
+      let articles = state.articles.concat(article);
+      state.articles = articles;
+    },
   },
   actions: {
     async loadUsers({ commit }) {
@@ -34,6 +38,10 @@ export default new Vuex.Store({
     async loadArticles({ commit }) {
       let response = await Api().get("/articles");
       commit("SET_ARTICLES", response.data);
+    },
+    async createArticle({ commit }, newArticle) {
+      let response = await Api().post("/article/new", newArticle);
+      commit("ADD_ARTICLE", response.data);
     },
     logoutUser({ commit }) {
       commit("LOGOUT_USER");

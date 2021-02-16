@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Registration from "../views/Registration.vue";
 import Feed from "../views/Feed.vue";
+import Profile from "../views/Profile.vue";
 import AdminPage from "../views/AdminPage.vue";
 import AdminUsers from "../views/AdminUsers.vue";
 import ArticleAlone from "../views/ArticleAlone.vue";
@@ -30,6 +31,11 @@ const routes = [
     path: "/registration",
     name: "Registration",
     component: Registration,
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
   {
     path: "/about",

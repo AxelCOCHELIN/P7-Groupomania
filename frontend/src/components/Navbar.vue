@@ -30,12 +30,10 @@
         ><span dark color="black">Admin</span></v-tooltip
       >
     </div>
-    <v-btn v-if="currentUser.username" text to="/articles/new"
-      >Ajouter un article</v-btn
-    >
+
     <v-spacer></v-spacer>
     <div class="title" v-if="currentUser.username">
-      <v-btn text
+      <v-btn text to="/profile"
         >{{ currentUser.username }} <v-icon>mdi-account-circle</v-icon></v-btn
       >
 
@@ -48,25 +46,12 @@
             aria-label="Fil d'actualité"
             v-bind="attrs"
             v-on="on"
-            to="/"
-            ><v-icon>mdi-home</v-icon></v-btn
+            to="/feed"
+            ><v-icon>mdi-newspaper-variant-outline</v-icon></v-btn
           ></template
         ><span dark color="black">Fil d'actualité</span></v-tooltip
       >
 
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            fab
-            plain
-            small
-            aria-label="tous les profils"
-            v-bind="attrs"
-            v-on="on"
-            ><v-icon>mdi-book</v-icon></v-btn
-          ></template
-        ><span dark color="black">Tous les profils</span></v-tooltip
-      >
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
