@@ -69,7 +69,12 @@
       :to="{ name: 'one-article', params: { id: article.id } }"
     >
       <v-card-title>
-        <h3>{{ article.title }}</h3>
+        <h3>
+          {{ article.title }}
+          <span class="font-italic subtitle-1"
+            >écrit par {{ article.User.username }}</span
+          >
+        </h3>
       </v-card-title>
       <v-card-text>
         {{ article.content }}

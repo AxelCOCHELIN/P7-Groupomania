@@ -19,6 +19,7 @@ export default {
         alert(user.error);
       } else {
         alert("Félicitation " + user.username + ", vous êtes connecté!");
+        this.$router.push("/feed");
       }
     },
   },

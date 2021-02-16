@@ -23,6 +23,7 @@ export default {
         alert(user.error);
       } else {
         alert("Bienvenue dans le groupe ");
+        this.$router.push("/login");
       }
     },
   },

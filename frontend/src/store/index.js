@@ -42,12 +42,13 @@ export default new Vuex.Store({
     async createArticle({ commit }, newArticle) {
       let response = await Api().post("/article/new", newArticle);
       commit("ADD_ARTICLE", response.data);
+      return response;
     },
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
     },
     async loadCurrentUser({ commit }) {
-      let user = JSON.parse(window.localStorage.currentUser);
+      let user = JSON.parse(window.localStorage.currentUser || {});
       commit("SET_CURRENT_USER", user);
     },
     async loginUser({ commit }, userInfo) {
@@ -55,6 +56,7 @@ export default new Vuex.Store({
         let response = await Api().post("/users/login", userInfo);
         let user = response.data;
         commit("SET_CURRENT_USER", user);
+        return user;
       } catch {
         return {
           error:
@@ -70,6 +72,7 @@ export default new Vuex.Store({
         );
         let user = response.data;
         commit("SET_CURRENT_USER", user);
+        return user;
       } catch {
         return {
           error: "Une erreur est survenue. Merci de réessayer",
