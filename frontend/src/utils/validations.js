@@ -14,7 +14,7 @@ let maxLength = (propertyType, maxLength) => {
 };
 
 let emailFormat = () => {
-  let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w{2,24})+$/;
+  let regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
   return (v) =>
     (v && regex.test(v)) || "Veuillez entrer une adresse mail valide";
 };

@@ -1,11 +1,15 @@
 <template>
   <v-form v-model="valid">
     <v-text-field
+      id="email"
+      autocomplete="off"
       v-model="userInfo.email"
       label="Adresse e-mail"
       :rules="[required('email'), emailFormat()]"
     ></v-text-field
     ><v-text-field
+      id="password"
+      autocomplete="off"
       v-model="userInfo.password"
       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
       label="Mot de passe"
@@ -20,6 +24,8 @@
       @click:append="showPassword = !showPassword"
     ></v-text-field>
     <v-text-field
+      id="username"
+      autocomplete="off"
       v-model="userInfo.username"
       label="Pseudo"
       :rules="[required('username')]"
