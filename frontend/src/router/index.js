@@ -17,11 +17,7 @@ const routes = [
     name: "Home",
     component: Home,
   },
-  {
-    path: "/feed",
-    name: "Feed",
-    component: Feed,
-  },
+
   {
     path: "/login",
     name: "Login",
@@ -36,6 +32,11 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile,
+  },
+  {
+    path: "/feed",
+    name: "Feed",
+    component: Feed,
   },
   {
     path: "/about",

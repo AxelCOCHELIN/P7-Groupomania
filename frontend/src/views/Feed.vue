@@ -88,8 +88,8 @@ export default {
   components: {},
   data() {
     return {
-      newArticle: { title: "", content: "" },
-      post: true,
+      newArticle: {},
+      post: false,
       ...validations,
     };
   },
