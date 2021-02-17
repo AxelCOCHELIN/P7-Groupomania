@@ -1,15 +1,21 @@
 <template>
   <v-container>
     <h1 class="display-3 ma-4 d-flex justify-center">Utilisateurs</h1>
-    <v-card outlined hover class="ma-4" v-for="user in users" :key="user.id">
+    <v-card
+      outlined
+      hover
+      class="ma-4"
+      v-for="article in articles"
+      :key="article.id"
+    >
       <v-card-title>
-        <h3>{{ user.username }}</h3>
+        <h3>{{ article.title }}</h3>
 
         <v-btn
           text
           class="ma-2 d-flex justify-center"
           small
-          @click="deleteUser(user)"
+          @click="deleteArticle(article)"
           >Supprimer</v-btn
         >
       </v-card-title>
@@ -21,23 +27,23 @@
 // @ is an alias to /src
 import { mapState } from "vuex";
 export default {
-  name: "AdminUsers",
+  name: "AdminArticles",
   components: {},
   computed: {
-    ...mapState(["users"]),
+    ...mapState(["articles"]),
   },
   methods: {
-    deleteUser(user) {
+    deleteArticle(article) {
       let response = confirm(
-        `Êtes vous sur de vouloir supprimer le compte appartenant à ${user.username}`
+        `Êtes vous sur de vouloir supprimer l'article nommé ${article.title}`
       );
       if (response) {
-        this.$store.dispatch("deleteUser", user);
+        this.$store.dispatch("deleteArticle", article);
       }
     },
   },
   mounted() {
-    this.$store.dispatch("loadUsers");
+    this.$store.dispatch("loadArticles");
   },
 };
 </script>

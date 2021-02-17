@@ -9,9 +9,9 @@ exports.router = (() => {
   // Routes assignations
   usersRouter.route("/users/registration").post(usersCtrl.signup);
   usersRouter.route("/users/login").post(usersCtrl.login);
-  usersRouter.route("/users/profile").get(usersCtrl.profile);
-  usersRouter.route("/users/profile").put(usersCtrl.updateProfile);
-  usersRouter.route("/users/profile").delete(usersCtrl.deleteProfile);
+  usersRouter.route("/users/:id").get(usersCtrl.profile);
+  usersRouter.route("/users/:id").put(usersCtrl.updateProfile);
+  usersRouter.route("/users/:id").delete(usersCtrl.deleteProfile);
   usersRouter.route("/users/").get(usersCtrl.allUsers);
 
   return usersRouter;

@@ -7,6 +7,8 @@ import Feed from "../views/Feed.vue";
 import Profile from "../views/Profile.vue";
 import AdminPage from "../views/AdminPage.vue";
 import AdminUsers from "../views/AdminUsers.vue";
+import AdminArticles from "../views/AdminArticles.vue";
+import AdminComments from "../views/AdminUsers.vue";
 import ArticleAlone from "../views/ArticleAlone.vue";
 
 Vue.use(VueRouter);
@@ -64,6 +66,16 @@ const routes = [
         path: "users",
         name: "admin-users",
         component: AdminUsers,
+      },
+      {
+        path: "articles",
+        name: "admin-articles",
+        component: AdminArticles,
+      },
+      {
+        path: "comments",
+        name: "admin-comments",
+        component: AdminComments,
       },
     ],
   },

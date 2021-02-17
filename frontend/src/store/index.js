@@ -25,8 +25,16 @@ export default new Vuex.Store({
     SET_USERS(state, users) {
       state.users = users;
     },
+    DELETE_USER(state, userId) {
+      let users = state.users.filter((u) => u.id != userId);
+      state.users = users;
+    },
     ADD_ARTICLE(state, article) {
       let articles = state.articles.concat(article);
+      state.articles = articles;
+    },
+    DELETE_ARTICLE(state, articleId) {
+      let articles = state.articles.filter((a) => a.id != articleId);
       state.articles = articles;
     },
   },
@@ -50,6 +58,18 @@ export default new Vuex.Store({
     async loadCurrentUser({ commit }) {
       let user = JSON.parse(window.localStorage.currentUser || {});
       commit("SET_CURRENT_USER", user);
+    },
+    async deleteUser({ commit }, user) {
+      let response = await Api().delete(`/users/${user.id}`);
+      if (response.status == 200 || response.status == 204) {
+        commit("DELETE_USER", user.id);
+      }
+    },
+    async deleteArticle({ commit }, article) {
+      let response = await Api().delete(`/article/${article.id}`);
+      if (response.status == 200 || response.status == 204) {
+        commit("DELETE_ARTICLE", article.id);
+      }
     },
     async loginUser({ commit }, userInfo) {
       try {
