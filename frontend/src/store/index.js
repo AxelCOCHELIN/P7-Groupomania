@@ -67,7 +67,7 @@ export default new Vuex.Store({
     },
     async deleteArticle({ commit }, article) {
       let response = await Api().delete(`/article/${article.id}`);
-      if (response.status == 200 || response.status == 204) {
+      if (response.status == 200 || response.status == 201) {
         commit("DELETE_ARTICLE", article.id);
       }
     },

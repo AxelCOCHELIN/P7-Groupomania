@@ -19,6 +19,7 @@
           >Supprimer</v-btn
         >
       </v-card-title>
+      <v-card-text>{{ article.content }}</v-card-text>
     </v-card>
   </v-container>
 </template>
