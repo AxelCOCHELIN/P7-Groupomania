@@ -1,18 +1,12 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <Signup />
-  </div>
+  <v-container>
+    <h1 class="text-center display-2">
+      Bienvenue sur le réseau social de Groupomania
+    </h1>
+    <v-img d-flex src="../assets/icon-above-font.png"></v-img>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import Signup from "@/components/Signup.vue";
-
-export default {
-  name: "Home",
-  components: {
-    Signup,
-  },
-};
+export default {};
 </script>

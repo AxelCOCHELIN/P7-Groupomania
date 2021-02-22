@@ -87,6 +87,7 @@ module.exports = {
         if (newUser) {
           return res.status(201).json({
             userId: newUser.id,
+            username: newUser.username,
           });
         } else {
           return res.status(500).json({ error: "cannot add user" });
@@ -144,6 +145,8 @@ module.exports = {
         if (userFound) {
           return res.status(201).json({
             userId: userFound.id,
+            username: userFound.username,
+            isAdmin: userFound.isAdmin,
             token: jwtUtils.generateTokenForUser(userFound),
           });
         } else {
@@ -229,7 +232,6 @@ module.exports = {
     // Getting auth header
     let headerAuth = req.headers["authorization"];
     let userId = jwtUtils.getUserId(headerAuth);
-
     if (userId < 0) return res.status(400).json({ error: "wrong token" });
 
     asyncLib.waterfall(
@@ -237,7 +239,7 @@ module.exports = {
         (done) => {
           models.User.findOne({
             attributes: ["id"],
-            where: { id: userId },
+            where: { id: req.params.id },
           })
             .then((userFound) => {
               done(null, userFound);
@@ -250,7 +252,7 @@ module.exports = {
           if (userFound) {
             userFound
               .destroy({
-                where: { id: userId },
+                where: { id: req.params.id },
               })
               .then(() => {
                 done(userFound);
@@ -266,7 +268,7 @@ module.exports = {
       (userFound) => {
         if (userFound) {
           return res
-            .status(201)
+            .status(204)
             .json({ message: "user has been successfully deleted" });
         } else {
           return res.status(500).json({ error: "cannot delete user profile" });
