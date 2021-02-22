@@ -66,7 +66,6 @@
       class="ma-4"
       v-for="article in articles"
       :key="article.title"
-      :to="{ name: 'one-article', params: { id: article.id } }"
     >
       <v-card-title>
         <h3>
@@ -79,6 +78,95 @@
       <v-card-text>
         {{ article.content }}
       </v-card-text>
+
+      <v-card-actions>
+        <v-row align="center" justify="end">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                plain
+                small
+                aria-label="commenter l'article"
+                v-bind="attrs"
+                v-on="on"
+                ><v-icon>mdi-comment</v-icon></v-btn
+              ></template
+            ><span dark color="black">Commenter</span></v-tooltip
+          >
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                plain
+                small
+                aria-label="modifier l'article"
+                v-bind="attrs"
+                v-on="on"
+                @click="edit = !edit"
+                ><v-icon>mdi-content-save-edit</v-icon></v-btn
+              ></template
+            ><span dark color="black">Modifier</span></v-tooltip
+          >
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                plain
+                small
+                aria-label="Supprimer l'article"
+                v-bind="attrs"
+                v-on="on"
+                @click="deleteArticle(article)"
+                ><v-icon>mdi-delete</v-icon></v-btn
+              ></template
+            ><span dark color="black">Supprimer</span></v-tooltip
+          >
+        </v-row></v-card-actions
+      >
+      <v-alert :value="edit" transition="scale-transition">
+        <v-card class="ma-4" :value="edit">
+          <v-form class="pb-2">
+            <v-text-field
+              class="mx-4 pa-4"
+              id="title"
+              v-model="article.title"
+              autocompete="off"
+              :rules="[
+                required('title'),
+                minLength('title', 2),
+                maxLength('title', 160),
+              ]"
+              counter="true"
+            ></v-text-field>
+            <v-divider></v-divider>
+            <v-textarea
+              class="mx-4 pa-4"
+              id="content"
+              autocomplete="off"
+              v-model="article.content"
+              :rules="[
+                required('content'),
+                minLength('content', 4),
+                maxLength('content', 8000),
+              ]"
+              counter="true"
+            >
+            </v-textarea>
+          </v-form>
+          <v-card-actions class="d-flex justify-center"
+            ><v-btn
+              text
+              rounded
+              outlined
+              color="deep-orange"
+              class="ma-2"
+              @click="editArticle"
+              >Éditer mon article
+            </v-btn></v-card-actions
+          >
+        </v-card>
+      </v-alert>
     </v-card>
   </v-container>
 </template>
@@ -95,19 +183,47 @@ export default {
     return {
       newArticle: {},
       post: false,
+      edit: false,
       ...validations,
     };
-  },
-  methods: {
-    createArticle() {
-      this.$store.dispatch("createArticle", this.newArticle);
-    },
   },
   computed: {
     articles() {
       return this.$store.state.articles;
     },
     ...mapState(["currentUser"]),
+  },
+  methods: {
+    async createArticle() {
+      await this.$store.dispatch("createArticle", this.newArticle);
+    },
+    editArticle() {
+      let currentUser = JSON.parse(window.localStorage.currentUser);
+      let article = this.$store.state.articles.find((a) => a.id);
+      let response = confirm(
+        `Êtes vous sur de vouloir modifier l'article nommé ${article.title}`
+      );
+      if (response) {
+        if (article.UserId == currentUser.userId) {
+          this.$store.dispatch("editArticle", article);
+        } else {
+          alert("Vous n'êtes pas autoriser à modifier cet article");
+        }
+      }
+    },
+    deleteArticle(article) {
+      let currentUser = JSON.parse(window.localStorage.currentUser);
+      let response = confirm(
+        `Êtes vous sur de vouloir supprimer l'article nommé ${article.title}`
+      );
+      if (response) {
+        if (article.UserId == currentUser.userId) {
+          this.$store.dispatch("deleteArticle", article);
+        } else {
+          alert("Vous n'êtes pas autoriser à supprimer cet article");
+        }
+      }
+    },
   },
 };
 </script>

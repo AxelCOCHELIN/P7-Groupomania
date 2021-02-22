@@ -1,9 +1,13 @@
 <template>
   <v-container>
-    <h1>The article selected</h1>
-    <h3>{{ article.title }}</h3>
-    <br />
-    {{ article.content }}
+    <h2>Vous avez choisi l'article suivant :</h2>
+    <v-card class="ma-4 pa-4"
+      ><h3>{{ article.title }}</h3>
+      <br />
+      {{ article.content }}
+      <v-btn>Modifier</v-btn>
+      <v-btn>Supprimer</v-btn>
+    </v-card>
   </v-container>
 </template>
 <script>

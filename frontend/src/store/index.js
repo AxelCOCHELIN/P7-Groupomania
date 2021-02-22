@@ -37,6 +37,13 @@ export default new Vuex.Store({
       let articles = state.articles.filter((a) => a.id != articleId);
       state.articles = articles;
     },
+    EDIT_ARTICLE(state, article) {
+      state.articles.forEach((a) => {
+        if (a.id == article.id) {
+          a = article;
+        }
+      });
+    },
   },
   actions: {
     async loadUsers({ commit }) {
@@ -70,6 +77,12 @@ export default new Vuex.Store({
       if (response.status == 200 || response.status == 201) {
         commit("DELETE_ARTICLE", article.id);
       }
+    },
+    async editArticle({ commit }, article) {
+      let response = await Api().put(`/article/${article.id}`, article);
+      let newArticle = response.data;
+      commit("EDIT_ARTICLE", newArticle);
+      return newArticle;
     },
     async loginUser({ commit }, userInfo) {
       try {
