@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 16 fév. 2021 à 16:42
+-- Généré le : mar. 23 fév. 2021 à 05:57
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -31,34 +31,22 @@ DROP TABLE IF EXISTS `articles`;
 CREATE TABLE IF NOT EXISTS `articles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `content` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `title` tinytext CHARACTER SET utf8 NOT NULL,
+  `content` text CHARACTER SET utf8 NOT NULL,
   `image` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `articles_ibfk_1` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `articles`
 --
 
 INSERT INTO `articles` (`id`, `userId`, `title`, `content`, `image`, `createdAt`, `updatedAt`) VALUES
-(7, 24, 'ça marche', 'je suis heureux', NULL, '2021-02-13 08:59:16', '2021-02-13 08:59:16'),
-(8, 24, 'mon nouvel article', 'c\'est de mla balle!', NULL, '2021-02-16 14:18:16', '2021-02-16 14:18:16'),
-(9, 24, 'Mon nouveau message', 'Je voulais dire que c\'était bien ce site', NULL, '2021-02-16 14:57:51', '2021-02-16 14:57:51'),
-(10, 24, 'Encore un nouvel article pour le fun', 'Parce que j\'adore raconter ma vie', NULL, '2021-02-16 15:01:43', '2021-02-16 15:01:43'),
-(11, 24, 'bienvenue sur mon article', 'content d\'être là', NULL, '2021-02-16 15:07:11', '2021-02-16 15:07:11'),
-(16, 25, 'Règles du réseau', 'Merci de rester respectueux et courtois dans vos échanges. Tous messages malveillants et/ou malintentionné sera supprimé. Bonne navigation sur le site! :)', NULL, '2021-02-16 15:41:03', '2021-02-16 15:41:03'),
-(17, 25, 'nouvel avertissement', 'Attention je suis le grand méchant admin', NULL, '2021-02-16 15:48:27', '2021-02-16 15:48:27'),
-(18, 25, 'Et un dernier pour la route', 'Attention à vos écrits mes ptits loups.', NULL, '2021-02-16 15:49:32', '2021-02-16 15:49:32'),
-(19, 24, 'Oui monsieur l\'admin', 'Il a pas l\'air commode cette admin... On dirait une armoire à glace... Armoire, commode... ok je sors.', NULL, '2021-02-16 15:53:45', '2021-02-16 15:53:45'),
-(20, 24, 'Ne me bannissez pas pour une mauvaise blague', 'Je saius que mon humour laisse à désirer mais j\'ose espérer qu\'il fait rire quelqu\'un d\'autre que ma grand mère.', NULL, '2021-02-16 15:58:21', '2021-02-16 15:58:21'),
-(21, 24, 'je tente des trucs', 'et je galère bien quand même', NULL, '2021-02-16 16:10:26', '2021-02-16 16:10:26'),
-(22, 24, 'et je reteste autant qu\'il faut', 'Mais faut que ça fonctionne à un moment donné.', NULL, '2021-02-16 16:11:44', '2021-02-16 16:11:44'),
-(23, 24, 'sdnhgsdf', 'df,jgufdgdgfbjfbjbjdbfbgbbrb  hudrfhg kbkud fgdkvb ', NULL, '2021-02-16 16:33:23', '2021-02-16 16:33:23'),
-(24, 24, 'popopopopo', 'poopoopop opopo popopo popop opopo popopopop opopopo pop', NULL, '2021-02-16 16:35:24', '2021-02-16 16:35:24');
+(38, 65, 'Bonjour à tous et à toutes.', 'Merci de respecter la courtoisie lors de l\'écriture de vos articles. Ceci pour le bien de tous et la paix de chacun.', NULL, '2021-02-17 20:37:41', '2021-02-23 03:48:40'),
+(40, 24, 'ça avance bien ce petit site web dis donc.', 'En même temps je travaille beaucoup dessus!! Comme un fou même', NULL, '2021-02-19 15:22:49', '2021-02-19 15:33:13');
 
 -- --------------------------------------------------------
 
@@ -71,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `articleId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `comment` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `comment` text CHARACTER SET utf8 NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -119,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `users`
@@ -127,7 +115,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `image`, `isAdmin`, `createdAt`, `updatedAt`) VALUES
 (24, 'axel1@test.com', '$2b$05$f.hV/OGrLNXQV.JIGW3yIeCN8e2EhZWoKlS1c6LnuplmsRSfhj8iG', 'Axoul', NULL, 0, '2021-02-11 13:24:27', '2021-02-11 13:24:27'),
-(25, 'iamtheadmin@groupomania.com', '$2b$05$dxKgkNqJWSQeDJP.21ptWOwkMIYokRwV10p1y66yODtkd3sGESTH.', 'Admin', NULL, 1, '2021-02-13 19:54:17', '2021-02-13 19:54:17');
+(65, 'iamtheadmin@groupomania.com', '$2b$05$7GQ/fXO5T/Ua8mCRj2o0v.k112iU/29EEsVRM8KoZk/j.ZGHip2Sy', 'Admin', NULL, 1, '2021-02-17 07:53:50', '2021-02-17 07:53:50'),
+(68, 'Paul@test.com', '$2b$05$xxDYwPwps5jPlc3leztW9uaJWg6olIc1567OdsnYGGjCVaWlRF8Wa', 'Paulo', NULL, 0, '2021-02-23 04:07:15', '2021-02-23 04:07:15');
 
 --
 -- Contraintes pour les tables déchargées
