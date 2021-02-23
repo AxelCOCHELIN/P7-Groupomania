@@ -8,8 +8,7 @@ import Profile from "../views/Profile.vue";
 import AdminPage from "../views/AdminPage.vue";
 import AdminUsers from "../views/AdminUsers.vue";
 import AdminArticles from "../views/AdminArticles.vue";
-import AdminComments from "../views/AdminUsers.vue";
-import ArticleAlone from "../views/ArticleAlone.vue";
+import ArticleEdit from "../views/ArticleEdit.vue";
 
 Vue.use(VueRouter);
 
@@ -72,17 +71,12 @@ const routes = [
         name: "admin-articles",
         component: AdminArticles,
       },
-      {
-        path: "comments",
-        name: "admin-comments",
-        component: AdminComments,
-      },
     ],
   },
   {
-    path: "/article/:id",
-    name: "one-article",
-    component: ArticleAlone,
+    path: "/article/:id/edit",
+    name: "article-edit",
+    component: ArticleEdit,
     params: true,
   },
 ];

@@ -66,6 +66,7 @@
       class="ma-4"
       v-for="article in articles"
       :key="article.title"
+      :id="article.id"
     >
       <v-card-title>
         <h3>
@@ -90,6 +91,7 @@
                 aria-label="commenter l'article"
                 v-bind="attrs"
                 v-on="on"
+                disabled
                 ><v-icon>mdi-comment</v-icon></v-btn
               ></template
             ><span dark color="black">Commenter</span></v-tooltip
@@ -103,7 +105,7 @@
                 aria-label="modifier l'article"
                 v-bind="attrs"
                 v-on="on"
-                @click="edit = !edit"
+                :to="{ name: 'article-edit', params: { id: article.id } }"
                 ><v-icon>mdi-content-save-edit</v-icon></v-btn
               ></template
             ><span dark color="black">Modifier</span></v-tooltip
@@ -124,50 +126,15 @@
           >
         </v-row></v-card-actions
       >
-      <v-alert :value="edit" transition="scale-transition">
-        <v-card class="ma-4" :value="edit">
-          <v-form class="pb-2">
-            <v-text-field
-              class="mx-4 pa-4"
-              id="title"
-              v-model="article.title"
-              autocompete="off"
-              :rules="[
-                required('title'),
-                minLength('title', 2),
-                maxLength('title', 160),
-              ]"
-              counter="true"
-            ></v-text-field>
-            <v-divider></v-divider>
-            <v-textarea
-              class="mx-4 pa-4"
-              id="content"
-              autocomplete="off"
-              v-model="article.content"
-              :rules="[
-                required('content'),
-                minLength('content', 4),
-                maxLength('content', 8000),
-              ]"
-              counter="true"
-            >
-            </v-textarea>
-          </v-form>
-          <v-card-actions class="d-flex justify-center"
-            ><v-btn
-              text
-              rounded
-              outlined
-              color="deep-orange"
-              class="ma-2"
-              @click="editArticle"
-              >Éditer mon article
-            </v-btn></v-card-actions
-          >
-        </v-card>
-      </v-alert>
     </v-card>
+    <v-snackbar v-model="snackbar" :timeout="-1">
+      snackbar action!
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -183,7 +150,7 @@ export default {
     return {
       newArticle: {},
       post: false,
-      edit: false,
+      snackbar: true,
       ...validations,
     };
   },
@@ -196,20 +163,7 @@ export default {
   methods: {
     async createArticle() {
       await this.$store.dispatch("createArticle", this.newArticle);
-    },
-    editArticle() {
-      let currentUser = JSON.parse(window.localStorage.currentUser);
-      let article = this.$store.state.articles.find((a) => a.id);
-      let response = confirm(
-        `Êtes vous sur de vouloir modifier l'article nommé ${article.title}`
-      );
-      if (response) {
-        if (article.UserId == currentUser.userId) {
-          this.$store.dispatch("editArticle", article);
-        } else {
-          alert("Vous n'êtes pas autoriser à modifier cet article");
-        }
-      }
+      this.$router.go();
     },
     deleteArticle(article) {
       let currentUser = JSON.parse(window.localStorage.currentUser);

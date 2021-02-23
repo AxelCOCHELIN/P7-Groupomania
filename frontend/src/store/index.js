@@ -11,23 +11,9 @@ export default new Vuex.Store({
     users: [],
   },
   mutations: {
+    // Articles part
     SET_ARTICLES(state, articles) {
       state.articles = articles;
-    },
-    LOGOUT_USER(state) {
-      state.currentUser = {};
-      window.localStorage.currentUser = JSON.stringify({});
-    },
-    SET_CURRENT_USER(state, user) {
-      state.currentUser = user;
-      window.localStorage.currentUser = JSON.stringify(user);
-    },
-    SET_USERS(state, users) {
-      state.users = users;
-    },
-    DELETE_USER(state, userId) {
-      let users = state.users.filter((u) => u.id != userId);
-      state.users = users;
     },
     ADD_ARTICLE(state, article) {
       let articles = state.articles.concat(article);
@@ -44,20 +30,57 @@ export default new Vuex.Store({
         }
       });
     },
+
+    // Users part
+    LOGOUT_USER(state) {
+      state.currentUser = {};
+      window.localStorage.currentUser = JSON.stringify({});
+    },
+    SET_CURRENT_USER(state, user) {
+      state.currentUser = user;
+      window.localStorage.currentUser = JSON.stringify(user);
+    },
+    SET_USERS(state, users) {
+      state.users = users;
+    },
+    DELETE_USER(state, userId) {
+      let users = state.users.filter((u) => u.id != userId);
+      state.users = users;
+    },
+    // comments part
+    ADD_COMMENT(state, comment) {
+      state.articles = [comment, ...state.articles];
+    },
   },
   actions: {
-    async loadUsers({ commit }) {
-      let response = await Api().get("/users");
-      commit("SET_USERS", response.data);
-    },
+    // articles part
     async loadArticles({ commit }) {
       let response = await Api().get("/articles");
       commit("SET_ARTICLES", response.data);
     },
     async createArticle({ commit }, newArticle) {
       let response = await Api().post("/article/new", newArticle);
-      commit("ADD_ARTICLE", response.data);
-      return response;
+      let savedArticle = response.data;
+      commit("ADD_ARTICLE", savedArticle);
+      return savedArticle;
+    },
+    async deleteArticle({ commit }, article) {
+      let response = await Api().delete(`/article/${article.id}`);
+      if (response.status == 200 || response.status == 201) {
+        commit("DELETE_ARTICLE", article.id);
+      }
+    },
+    async editArticle({ commit }, article) {
+      let response = await Api().put(`/article/${article.id}`, article);
+      let newArticle = response.data;
+      commit("EDIT_ARTICLE", newArticle);
+      return newArticle;
+    },
+
+    // users part
+    async loadUsers({ commit }) {
+      let response = await Api().get("/users");
+      commit("SET_USERS", response.data);
     },
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
@@ -71,18 +94,6 @@ export default new Vuex.Store({
       if (response.status == 200 || response.status == 204) {
         commit("DELETE_USER", user.id);
       }
-    },
-    async deleteArticle({ commit }, article) {
-      let response = await Api().delete(`/article/${article.id}`);
-      if (response.status == 200 || response.status == 201) {
-        commit("DELETE_ARTICLE", article.id);
-      }
-    },
-    async editArticle({ commit }, article) {
-      let response = await Api().put(`/article/${article.id}`, article);
-      let newArticle = response.data;
-      commit("EDIT_ARTICLE", newArticle);
-      return newArticle;
     },
     async loginUser({ commit }, userInfo) {
       try {
