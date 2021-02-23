@@ -16,9 +16,14 @@ export default {
     async loginUser(userInfo) {
       let user = await this.$store.dispatch("loginUser", userInfo);
       if (user.error) {
-        alert(user.error);
+        this.$store.dispatch("setSnackbar", {
+          color: "error",
+          text: user.error,
+        });
       } else {
-        alert("Félicitation " + user.username + ", vous êtes connecté!");
+        this.$store.dispatch("setSnackbar", {
+          text: "Félicitation " + user.username + ", vous êtes connecté!",
+        });
         this.$router.push("/feed");
       }
     },

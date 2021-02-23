@@ -9,6 +9,7 @@ export default new Vuex.Store({
     articles: [],
     currentUser: {},
     users: [],
+    snackbars: [],
   },
   mutations: {
     // Articles part
@@ -47,9 +48,10 @@ export default new Vuex.Store({
       let users = state.users.filter((u) => u.id != userId);
       state.users = users;
     },
-    // comments part
-    ADD_COMMENT(state, comment) {
-      state.articles = [comment, ...state.articles];
+
+    //snackbar
+    SET_SNACKBAR(state, snackbar) {
+      state.snackbars = state.snackbars.concat(snackbar);
     },
   },
   actions: {
@@ -119,9 +121,15 @@ export default new Vuex.Store({
         return user;
       } catch {
         return {
-          error: "Une erreur est survenue. Merci de réessayer",
+          error: "Une adresse e-mail est déjà enregistrée pour ce compte",
         };
       }
+    },
+    //snackbar
+    setSnackbar({ commit }, snackbar) {
+      snackbar.showing = true;
+      snackbar.color = snackbar.color || "success";
+      commit("SET_SNACKBAR", snackbar);
     },
   },
   modules: {},

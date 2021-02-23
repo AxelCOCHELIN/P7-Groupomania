@@ -108,6 +108,10 @@ export default {
   methods: {
     logoutUser() {
       this.$store.dispatch("logoutUser");
+      this.$store.dispatch("setSnackbar", {
+        color: "info",
+        text: "Au revoir , vous êtes déconnecté!",
+      });
     },
   },
   computed: {

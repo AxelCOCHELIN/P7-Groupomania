@@ -127,14 +127,6 @@
         </v-row></v-card-actions
       >
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="-1">
-      snackbar action!
-      <template v-slot:action="{ attrs }">
-        <v-btn text v-bind="attrs" @click="snackbar = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -150,7 +142,6 @@ export default {
     return {
       newArticle: {},
       post: false,
-      snackbar: true,
       ...validations,
     };
   },
@@ -162,7 +153,13 @@ export default {
   },
   methods: {
     async createArticle() {
-      await this.$store.dispatch("createArticle", this.newArticle);
+      let article = await this.$store.dispatch(
+        "createArticle",
+        this.newArticle
+      );
+      this.$store.dispatch("setSnackbar", {
+        text: `Votre article nommé : "${article.title}" a bien été enregistré !`,
+      });
       this.$router.go();
     },
     deleteArticle(article) {
@@ -173,6 +170,9 @@ export default {
       if (response) {
         if (article.UserId == currentUser.userId) {
           this.$store.dispatch("deleteArticle", article);
+          this.$store.dispatch("setSnackbar", {
+            text: `Votre article nommé : "${article.title}" a bien été supprimé !`,
+          });
         } else {
           alert("Vous n'êtes pas autoriser à supprimer cet article");
         }

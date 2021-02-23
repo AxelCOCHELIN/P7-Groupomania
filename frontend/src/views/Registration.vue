@@ -20,9 +20,14 @@ export default {
     async registerUser(registrationInfo) {
       let user = await this.$store.dispatch("registerUser", registrationInfo);
       if (user.error) {
-        alert(user.error);
+        this.$store.dispatch("setSnackbar", {
+          color: "error",
+          text: user.error,
+        });
       } else {
-        alert("Bienvenue dans le groupe ");
+        this.$store.dispatch("setSnackbar", {
+          text: "Votre compte a été créé, Bienvenue dans le groupe",
+        });
         this.$router.push("/login");
       }
     },

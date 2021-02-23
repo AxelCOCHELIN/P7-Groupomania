@@ -63,8 +63,11 @@ export default {
     },
   },
   methods: {
-    editArticle() {
-      this.$store.dispatch("editArticle", this.article);
+    async editArticle() {
+      let article = await this.$store.dispatch("editArticle", this.article);
+      this.$store.dispatch("setSnackbar", {
+        text: `Votre article nommé : "${article.title}" a bien été modifié !`,
+      });
       this.$router.push("/feed");
     },
   },
