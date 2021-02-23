@@ -1,6 +1,10 @@
 <template>
-  <v-app-bar app color="deep-orange lighten-3" class="headline text-uppercase">
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+  <v-app-bar
+    app
+    color="deep-orange lighten-3"
+    dense
+    class="headline text-uppercase"
+  >
     <v-toolbar-title>
       <router-link to="/">
         <v-img
@@ -33,9 +37,7 @@
 
     <v-spacer></v-spacer>
     <div class="title" v-if="currentUser.username">
-      <v-btn text to="/profile"
-        >{{ currentUser.username }} <v-icon>mdi-account-circle</v-icon></v-btn
-      >
+      <v-btn text class="hidden-xs-only">{{ currentUser.username }}</v-btn>
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -47,6 +49,7 @@
             v-bind="attrs"
             v-on="on"
             to="/feed"
+            class="hidden-xs-only"
             ><v-icon>mdi-newspaper-variant-outline</v-icon></v-btn
           ></template
         ><span dark color="black">Fil d'actualité</span></v-tooltip
@@ -116,6 +119,11 @@ export default {
   },
   computed: {
     ...mapState(["currentUser"]),
+  },
+  data() {
+    return {
+      drawer: false,
+    };
   },
 };
 </script>
